@@ -1,0 +1,35 @@
+---
+title: "Report on Gun Murders"
+author: "Miguel Maravi"
+date: "11/26/2019"
+output : github_document
+---
+
+
+```{r }
+url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv"
+dest_file <- "data/murders.csv"
+download.file(url, destfile=dest_file)
+
+```
+
+```{r}
+library("tidyverse")
+murders <- read_csv ("data/murders.csv")
+murders <- murders %>% mutate(region=factor(region), rate=total/population*10^5)
+murders
+
+```
+
+
+```{r}
+
+load("rda/murders.rda")
+murders%>%mutate(abb=reorder(abb, rate))%>%
+  ggplot(aes(abb,rate))+
+  geom_bar(width=0.5, stat="identity", color="black")+
+  coord_flip()
+
+```
+
+
